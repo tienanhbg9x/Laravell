@@ -1,15 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -85,7 +75,12 @@ Route::get('themcot',function(){
       $table->string('email');
    });
 });
-
+//doi ten
 Route::get('doiten',function(){
     Schema::rename('theloai','nguoidung');
+});
+//xóa bảng
+Route::get('xoabang',function(){
+   Schema::drop('nguoidung');
+   echo 'da xoa bang nguoi dung';
 });
