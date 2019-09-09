@@ -79,8 +79,5 @@ Route::get('themcot',function(){
 Route::get('doiten',function(){
     Schema::rename('theloai','nguoidung');
 });
-//xóa bảng
-Route::get('xoabang',function(){
-   Schema::drop('nguoidung');
-   echo 'da xoa bang nguoi dung';
-});
+
+
