@@ -1,15 +1,5 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', function () {
     return view('welcome');
@@ -85,126 +75,9 @@ Route::get('themcot',function(){
       $table->string('email');
    });
 });
-
+//doi ten
 Route::get('doiten',function(){
     Schema::rename('theloai','nguoidung');
 });
 
-//queryBuilder
-Route::get('qb/get',function(){
-    $data = DB::table('users')->get();
-    foreach ($data as $row)
-    {
-        foreach($row as $key=>$value)
-        {
-            echo $key.":".$value."<br>";
-        }
-        echo "<hr>";
-    }
-});
-//where
-Route::get('qb/where',function(){
-    $data = DB::table('users')->where('id','=',2)->get();
-    foreach ($data as $row)
-    {
-        foreach($row as $key=>$value)
-        {
-            echo $key.":".$value."<br>";
-        }
-        echo "<hr>";
-    }
-});
 
-//select id,name,email,...
-Route::get('qb/select',function(){
-    $data = DB::table('users')->select('id','name','email')->where('id',2)->get();
-    foreach ($data as $row)
-    {
-        foreach($row as $key=>$value)
-        {
-            echo $key.":".$value."<br>";
-        }
-        echo "<hr>";
-    }
-});
-
-//select name as hoten form...(doi ten cot name thanh hoten)
-Route::get('qb/raw',function(){
-    $data = DB::table('users')->select(DB::raw('id, name as hoten, email'))->where('id',2)->get();
-    foreach ($data as $row)
-    {
-        foreach($row as $key=>$value)
-        {
-            echo $key.":".$value."<br>";
-        }
-        echo "<hr>";
-    }
-});
-
-//orderBy and limit <=> skip, take
-Route::get('qb/orderby',function(){
-    $data = DB::table('users')->select(DB::raw('id, name as hoten, email'))->where('id','>',1)
-        ->orderBy('id','desc')->take(2);
-    echo $data->count();
-//    foreach ($data as $row)
-//    {
-//        foreach($row as $key=>$value)
-//        {
-//            echo $key.":".$value."<br>";
-//        }
-//        echo "<hr>";
-//    }
-});
-
-//update
-Route::get('qb/update',function(){
-   DB::table('users')->where('id',1)->update(['name'=>'tienanh','email'=>'tienanhbg1997@gmail.com']);
-   echo 'da update';
-});
-
-//delete
-Route::get('qb/delete',function(){
-   DB::table('users')->where('id',1)->delete();
-   echo 'da xoa';
-});
-
-//model
-Route::get('model/save',function(){
-   $user = new App\User();
-   $user->name = "Tiến Anh";
-   $user->email = "tienanhbg9x@gmail.com";
-   $user->password = "Mat Khau";
-
-   $user->save();
-   echo "da save";
-});
-
-Route::get('model/query',function(){
-   $user = App\User::find(5);
-   echo $user->email;
-});
-
-Route::get('model/sanpham/save/{ten}',function($ten){
-   $sanpham = new App\SanPham();
-   $sanpham->ten = $ten;
-   $sanpham->soluong = 1000;
-
-   $sanpham->save();
-   echo "Đã lưu"." ".$ten;
-});
-
-Route::get('model/sanpham/all',function(){
-    //trả dữ liệu dạng json,dạng mảng
-    $sanpham = App\SanPham::all()->toArray();
-    var_dump($sanpham);
-});
-
-Route::get('model/sanpham/ten',function(){
-    $sanpham = App\SanPham::where('ten','Laptop')->get();
-    echo $sanpham;
-});
-Route::get('model/sanpham/destroy',function() {
-    //xóa dữ liệu bằng khóa chính trong bảng
-    App\SanPham::destroy('7');
-    echo 'Đã xóa';
-});
