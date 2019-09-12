@@ -47,7 +47,7 @@ Route::get('masterView',function (){
     return view('laravel');
 });
 
-//Database
+                                                     //Database
 Route::get('database',function(){
     Schema::create('loaisanpham',function($table){
         $table->increments('id');
@@ -73,13 +73,13 @@ Route::get('lienketbang',function(){
     });
     echo 'da tao bang san pham';
 });
-//sua bang
+                                                //sua bang
 Route::get('suabang',function(){
    Schema::table('theloai',function($table){
         $table->dropColumn('nsx');
    });
 });
-//them cot
+                                                //them cot
 Route::get('themcot',function(){
    Schema::table('theloai',function($table){
       $table->string('email');
@@ -90,7 +90,7 @@ Route::get('doiten',function(){
     Schema::rename('theloai','nguoidung');
 });
 
-//queryBuilder
+                                            //queryBuilder
 Route::get('qb/get',function(){
     $data = DB::table('users')->get();
     foreach ($data as $row)
@@ -102,7 +102,7 @@ Route::get('qb/get',function(){
         echo "<hr>";
     }
 });
-//where
+                                                    //where
 Route::get('qb/where',function(){
     $data = DB::table('users')->where('id','=',2)->get();
     foreach ($data as $row)
@@ -115,7 +115,7 @@ Route::get('qb/where',function(){
     }
 });
 
-//select id,name,email,...
+                                            //select id,name,email,...
 Route::get('qb/select',function(){
     $data = DB::table('users')->select('id','name','email')->where('id',2)->get();
     foreach ($data as $row)
@@ -128,7 +128,7 @@ Route::get('qb/select',function(){
     }
 });
 
-//select name as hoten form...(doi ten cot name thanh hoten)
+                            //select name as hoten form...(doi ten cot name thanh hoten)
 Route::get('qb/raw',function(){
     $data = DB::table('users')->select(DB::raw('id, name as hoten, email'))->where('id',2)->get();
     foreach ($data as $row)
@@ -141,7 +141,7 @@ Route::get('qb/raw',function(){
     }
 });
 
-//orderBy and limit <=> skip, take
+                                        //orderBy and limit <=> skip, take
 Route::get('qb/orderby',function(){
     $data = DB::table('users')->select(DB::raw('id, name as hoten, email'))->where('id','>',1)
         ->orderBy('id','desc')->take(2);
@@ -156,19 +156,19 @@ Route::get('qb/orderby',function(){
 //    }
 });
 
-//update
+                                                        //update
 Route::get('qb/update',function(){
    DB::table('users')->where('id',1)->update(['name'=>'tienanh','email'=>'tienanhbg1997@gmail.com']);
    echo 'da update';
 });
 
-//delete
+                                                        //delete
 Route::get('qb/delete',function(){
    DB::table('users')->where('id',1)->delete();
    echo 'da xoa';
 });
 
-//model
+                                                        //model
 Route::get('model/save',function(){
    $user = new App\User();
    $user->name = "Tiến Anh";
@@ -208,3 +208,40 @@ Route::get('model/sanpham/destroy',function() {
     App\SanPham::destroy('7');
     echo 'Đã xóa';
 });
+
+//Tạo cột
+Route::get('taocot',function(){
+    Schema::table('sanpham',function($table){
+        $table->integer('id_loaisanpham')->unsigned();
+    });
+    echo "da tao cot";
+});
+
+Route::get('model/lienket',function(){
+    $data = App\SanPham::find(8)->loaisanpham->toArray();
+    var_dump($data);
+});
+Route::get('model/lienketloaisp',function(){
+    $data = App\LoaiSanPham::find(1)->sanpham->toArray();
+    var_dump($data);
+});
+
+//Bảo mật web với Middleware
+Route::get('diem',function(){
+    echo 'Bạn đã đủ điểm';
+})->middleware('MyMiddleware')->name('diem');
+Route::get('loi',function(){
+    echo 'Bạn chưa đủ điểm';
+})->name('loi');
+
+Route::get('nhapdiem',function(){
+    return view('nhapdiem');
+})->name('nhapdiem');
+
+//Auth
+Route::get('dangnhap',function(){
+    return view('thanhcong');
+});
+
+Route::post('login','AuthController@login')->name('login');
+Route::get('logout','AuthController@logout');
