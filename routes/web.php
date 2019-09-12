@@ -235,4 +235,18 @@ Route::get('dangnhap',function(){
 Route::post('login','AuthController@login')->name('login');
 Route::get('logout','AuthController@logout');
 
+//Session
+Route::group(['middleware' => ['web']],function(){
+   Route::get('session',function(){
+      Session::put('KhoaHoc','Laravel');//Tạo session
+      echo 'Đã đặt session';
+      echo '<br>';
+      Session::forget('KhoaHoc');
+//      echo Session::get('KhoaHoc');
+       if(Session::has('KhoaHoc'))
+           echo 'Đã có session';
+       else
+           echo 'Chưa có session';
+   });
+});
 
