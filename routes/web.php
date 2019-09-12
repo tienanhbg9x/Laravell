@@ -37,7 +37,7 @@ Route::get('masterView',function (){
     return view('laravel');
 });
 
-//Database
+                                                     //Database
 Route::get('database',function(){
     Schema::create('loaisanpham',function($table){
         $table->increments('id');
@@ -63,13 +63,13 @@ Route::get('lienketbang',function(){
     });
     echo 'da tao bang san pham';
 });
-//sua bang
+                                                //sua bang
 Route::get('suabang',function(){
    Schema::table('theloai',function($table){
         $table->dropColumn('nsx');
    });
 });
-//them cot
+                                                //them cot
 Route::get('themcot',function(){
    Schema::table('theloai',function($table){
       $table->string('email');
